@@ -1,3 +1,5 @@
+
+  
 # SpotifyImport
   
 Hi and Welcome to SpotifyImport,    
@@ -24,9 +26,9 @@ You need to define environement variables containing your Spotify API credential
 > Have a look on https://developer.spotify.com/ to generate your own API keys
 
 You will also need to define a **callback_uri**, by default the script will use *http://localhost/callback*
-If you wan to use a custom one you should change specify it:
+If you wan to use a custom one you should specify it:
 
-    export SPOTIFY_REDIRECT_URI=<custom_callback_url>
+    export SPOTIFY_REDIRECT_URI=<custom_callback_uri>
 
 Run the script!
   
@@ -39,7 +41,7 @@ Run the script!
 
 > Other tools like PandoraExport are in preparation, stay tuned!
 
-If you want to generate a Json file your own way you have to respect the following schema:
+If you want to generate a playlist based Json file your own way you have to respect the following schema:  
 
     {  
       "Artist1": [  
@@ -55,9 +57,10 @@ If you want to generate a Json file your own way you have to respect the followi
       ]
     }
 
-## More information about API :    
-PandoraExport: https://github.com/Doritos250/PandoraExport
-Spotify: https://github.com/mental32/spotify.py   
+## More information about libraries:    
 FuzzyWuzzy: https://github.com/seatgeek/fuzzywuzzy
+
+Spotify: https://github.com/mental32/spotify.py
+
 Docopt: https://github.com/docopt/docopt
 

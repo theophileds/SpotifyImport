@@ -20,8 +20,9 @@ First you need to install dependencies with Pipenv
 
 You need to define environement variables containing your Spotify API credentials
 
-    export SPOTIFY_CLIENT_ID=<your_spotify_client_id> 
-    export SPOTIFY_CLIENT_SECRET=<your_spotify_client_secret> 
+    export SPOTIPY_CLIENT_ID='your-spotify-client-id'
+    export SPOTIPY_CLIENT_SECRET='your-spotify-client-secret'
+    export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
 
 > Have a look on https://developer.spotify.com/ to generate your own API keys
 
@@ -58,9 +59,9 @@ If you want to generate a playlist based Json file your own way you have to resp
     }
 
 ## More information about libraries:    
-FuzzyWuzzy: https://github.com/seatgeek/fuzzywuzzy
+thefuzz: https://github.com/seatgeek/thefuzz
 
-Spotify: https://github.com/mental32/spotify.py
+Spotipy: https://github.com/spotipy-dev/spotipy
 
 Docopt: https://github.com/docopt/docopt
 

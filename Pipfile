@@ -6,10 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-fuzzywuzzy = "~=0.17"
-python-levenshtein = "~=0.12"
-spotify = "~=0.8"
 docopt = "~=0.6"
+spotipy = "~=2.23"
+thefuzz = "~=0.22"
 
 [requires]
-python_version = "3.7"
+python_version = "3.12"

@@ -33,40 +33,42 @@ class spotipyImport:
         try:
             with open(filename, 'r') as json_file:
                 return json.load(json_file)
-        except FileNotFoundError as e:
+        except (FileNotFoundError, json.JSONDecodeError) as e:
             logger.error(e)
             exit(0)
 
     def search_music_from_playlist(self, playlist):
-        matched_tracks = []
-        for artist, songs in playlist.items():
-            artist_name = artist
-            for song in songs:
-                track_name = song
-                query_result = self.sp_client.search(q='{} {}'.format(artist_name, track_name), type='track')
-                if 'tracks' in query_result:
-                    match = next((spotify_track['id'] for spotify_track in query_result['tracks']['items'] if fuzz.ratio(spotify_track['name'], track_name) >= 90), None)
-                    if match:
-                        logger.info('There is a match for: {} - {}'.format(artist_name, track_name))
-                        matched_tracks.append(match)
+        if playlist:
+            matched_tracks = []
+            for artist_name, tracks in playlist.items():
+                for track_name in tracks:
+                    query_result = self.sp_client.search(q='{} {}'.format(artist_name, track_name), type='track')
+                    if 'tracks' in query_result:
+                        # Check if there is a matched song with a ratio of 90
+                        match = next((spotify_track['id'] for spotify_track in query_result['tracks']['items'] if fuzz.ratio(spotify_track['name'], track_name) >= 90), None)
+                        if match:
+                            logger.info('There is a match for: {} - {}'.format(artist_name, track_name))
+                            matched_tracks.append(match)
+                        else:
+                            logger.warning('No match for: {} - {}'.format(artist_name, track_name))
                     else:
-                        logger.warning('No match for: {} - {}'.format(artist_name, track_name))
-                else:
-                    logger.warning('Nothing found for: {} - {}'.format(artist_name, track_name))
-        return matched_tracks
+                        logger.warning('Nothing found for: {} - {}'.format(artist_name, track_name))
+            return matched_tracks
+        else:
+            logger.warning('Playlist is empty')
+            exit(0)
 
-    def generate_playlist(self, name, tracks, is_public=True):
-        playlist = self.sp_client.user_playlist_create(self.sp_id, name, public=is_public)
+    def generate_playlist(self, playlist_name, tracks, is_public=True):
+        playlist = self.sp_client.user_playlist_create(self.sp_id, playlist_name, public=is_public)
         self.sp_client.playlist_add_items(playlist['id'], tracks)
-        logger.info('Playlist {} successfully created!'.format(name))
+        logger.info('Playlist {} successfully created!'.format(playlist_name))
 
 if __name__ == '__main__':
     arguments = docopt(__doc__)
     input_filename = arguments.get('--input')
     playlist_name = ' '.join(arguments.get('--playlist').split('_'))
+    import_playlist = spotipyImport.load_playlist_from_json(input_filename)
 
     spotipy_import = spotipyImport()
-    import_playlist = spotipy_import.load_playlist_from_json(input_filename)
     matched_songs = spotipy_import.search_music_from_playlist(import_playlist)
-    if matched_songs:
-        spotipy_import.generate_playlist(playlist_name, matched_songs)
+    spotipy_import.generate_playlist(playlist_name, matched_songs)

@@ -22,14 +22,11 @@ You need to define environement variables containing your Spotify API credential
 
     export SPOTIPY_CLIENT_ID='your-spotify-client-id'
     export SPOTIPY_CLIENT_SECRET='your-spotify-client-secret'
-    export SPOTIPY_REDIRECT_URI='your-app-redirect-url'
+    export SPOTIPY_REDIRECT_URI='http://localhost/callback'
 
 > Have a look on https://developer.spotify.com/ to generate your own API keys
 
-You will also need to define a **callback_uri**, by default the script will use *http://localhost/callback*
-If you wan to use a custom one you should specify it:
-
-    export SPOTIFY_REDIRECT_URI=<custom_callback_uri>
+You will also need to define a **callback_uri**, i.e: *http://localhost/callback*
 
 Run the script!
   

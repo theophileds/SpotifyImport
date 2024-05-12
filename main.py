@@ -20,8 +20,7 @@ from thefuzz import fuzz
 
 from spotipy.oauth2 import SpotifyOAuth
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger()
+logging.basicConfig(format='%(levelname)s - %(message)s', level=logging.INFO)
 
 class spotipyImport:
     def __init__(self):
@@ -34,7 +33,7 @@ class spotipyImport:
             with open(filename, 'r') as json_file:
                 return json.load(json_file)
         except (FileNotFoundError, json.JSONDecodeError) as e:
-            logger.error(e)
+            logging.error(e)
             exit(0)
 
     def search_music_from_playlist(self, playlist):
@@ -47,21 +46,22 @@ class spotipyImport:
                         # Check if there is a matched song with a ratio of 90
                         match = next((spotify_track['id'] for spotify_track in query_result['tracks']['items'] if fuzz.ratio(spotify_track['name'], track_name) >= 90), None)
                         if match:
-                            logger.info('There is a match for: {} - {}'.format(artist_name, track_name))
+                            logging.info('There is a match for: {} - {}'.format(artist_name, track_name))
                             matched_tracks.append(match)
                         else:
-                            logger.warning('No match for: {} - {}'.format(artist_name, track_name))
+                            logging.warning('No match for: {} - {}'.format(artist_name, track_name))
                     else:
-                        logger.warning('Nothing found for: {} - {}'.format(artist_name, track_name))
+                        logging.warning('Nothing found for: {} - {}'.format(artist_name, track_name))
             return matched_tracks
         else:
-            logger.warning('Playlist is empty')
+            logging.warning('Playlist is empty')
             exit(0)
 
     def generate_playlist(self, playlist_name, tracks, is_public=True):
         playlist = self.sp_client.user_playlist_create(self.sp_id, playlist_name, public=is_public)
         self.sp_client.playlist_add_items(playlist['id'], tracks)
-        logger.info('Playlist {} successfully created!'.format(playlist_name))
+        logging.info('Playlist {} successfully created!'.format(playlist_name))
+
 
 if __name__ == '__main__':
     arguments = docopt(__doc__)

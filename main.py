@@ -56,7 +56,10 @@ class spotipyImport:
 
     def generate_playlist(self, name, tracks, private):
         playlist = self.sp_client.user_playlist_create(self.sp_id, name, public=not private)
-        self.sp_client.playlist_add_items(playlist['id'], tracks)
+        # Add songs by batch of 100
+        for i in range(0, len(tracks), 100):
+            batch_tracks = tracks[i:i+100]
+            self.sp_client.playlist_add_items(playlist['id'], batch_tracks)
         logging.info('Playlist {} successfully created!'.format(name))
 
 

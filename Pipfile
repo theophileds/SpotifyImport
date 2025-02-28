@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 docopt = "~=0.6"
-spotipy = "~=2.23"
+spotipy = "~=2.25"
 thefuzz = "~=0.22"
 
 [requires]
